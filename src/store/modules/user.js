@@ -1,13 +1,18 @@
-import { login } from "@/api/user";
-import { Message } from "element-ui";
+import { login, getinfolist } from "@/api/user";
+// import { Message } from "element-ui";
 export default {
   namespaced: true,
   state: {
     token: "",
+    userId: "",
+    infolist: {},
   },
   mutations: {
     settoken(state, payload) {
       state.token = payload;
+    },
+    setinfouserId(state, payload) {
+      state.userId = payload;
     },
   },
   actions: {
@@ -19,12 +24,15 @@ export default {
         payload.clientToken,
         payload.loginType
       );
-      if (res.data.success) {
-        context.commit("settoken", res.data.token);
-        Message('登录成功')
-      } else {
-        Message(res.data.msg)
-      }
+      console.log(res)
+      console.log(res.userId)
+      context.commit("settoken", res.token);
+      context.commit("setinfouserId", res.userId);
+    },
+    //获取用户信息
+    async getinfolist(context, payload) {
+      const res = await getinfolist(payload)
+      console.log(res);
     },
   },
 };

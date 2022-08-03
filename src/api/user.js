@@ -1,8 +1,8 @@
 import request from "@/utils/request";
-
+//验证码
 export function getcode(clientToken) {
   return request({
-    url: `/api/user-service/user/imageCode/${clientToken}`,
+    url: `/user-service/user/imageCode/${clientToken}`,
     responseType: "blob",
   });
 }
@@ -17,7 +17,7 @@ export function getcode(clientToken) {
  */
 export function login(loginName, password, code, clientToken, loginType) {
   return request({
-    url: "/api/user-service/user/login",
+    url: "/user-service/user/login",
     method: "POST",
     data: {
       loginName,
@@ -26,5 +26,10 @@ export function login(loginName, password, code, clientToken, loginType) {
       clientToken,
       loginType,
     },
+  });
+}
+export function getinfolist(id) {
+  return request({
+    url: "/user-service/user/" + id,
   });
 }

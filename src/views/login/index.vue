@@ -8,7 +8,6 @@
       <div>
         <el-form
           ref="listfrom"
-          status-icon
           class="demo-ruleForm"
           :model="listfrom"
           :rules="listfromrules"
@@ -30,7 +29,7 @@
                 <span class="iconfont icon-biyanjing" /> </template
             ></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="code">
             <el-input autocomplete="off" v-model="listfrom.code">
               <template #prefix>
                 <span class="iconfont icon-mn_dunpai" />
@@ -44,7 +43,9 @@
       </div>
       <div class="btnlogin">
         <el-row>
-          <el-button class="q1" @click="loginbtn">登录</el-button>
+          <el-button class="q1" :loading="islogin" @click="loginbtn"
+            >登录</el-button
+          >
         </el-row>
       </div>
     </div>
@@ -57,6 +58,8 @@ import { getcode } from "@/api/user";
 export default {
   data() {
     return {
+      islogin: false,
+
       imgs: "",
       listfrom: {
         clientToken: "",
@@ -84,6 +87,10 @@ export default {
             trigger: "blur",
           },
         ],
+        code: [
+          { required: true, message: "请输入验证码", trigger: "blur" },
+          { min: 4, max: 4, massage: "验证码格式错误", trigger: "blur" },
+        ],
       },
     };
   },
@@ -105,14 +112,17 @@ export default {
       this.imgs = captchaimg;
     },
     async loginbtn() {
+      this.islogin = true;
       try {
         await this.$refs.listfrom.validate();
-        this.$store.dispatch("user/gettoken", this.listfrom);
-        // console.log(this.listfrom);
-        this.$router.push('/dashboard')
-      } catch (error) {
-        
+        await this.$store.dispatch("user/gettoken", this.listfrom);
+        // this.$router.push("/dashboard");
+        this.$message.success("登录成功");
+        this.$router.push("/");
+      } finally {
+        this.islogin = false;
       }
+      // console.log(this.listfrom);
     },
     //点击切换验证码
     upimgcomde() {
