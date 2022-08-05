@@ -15,17 +15,19 @@ const store = new Vuex.Store({
     user,
   },
   getters,
-  plugins:[
+  plugins: [
     createVuexPersisted({
-      reducer(state){
-        return{
-          user:{
-            token: state.user.token
-          }
-        }
-      }
-    })
-  ]
+      reducer(state) {
+        return {
+          user: {
+            token: state.user.token,
+            userId: state.user.userId,
+            infolist: state.user.infolist,
+          },
+        };
+      },
+    }),
+  ],
 });
 
 export default store;

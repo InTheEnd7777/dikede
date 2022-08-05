@@ -117,8 +117,8 @@ export default {
         await this.$refs.listfrom.validate();
         await this.$store.dispatch("user/gettoken", this.listfrom);
         // this.$router.push("/dashboard");
-        this.$message.success("登录成功");
         this.$router.push("/");
+        this.$message.success("登录成功");
       } finally {
         this.islogin = false;
       }
