@@ -1,54 +1,52 @@
 <template>
   <div>
     <div class="nav">
-      工单编号：<el-input placeholder="请输入内容" class="inputtext"></el-input>
-      工单状态：
-      <el-select v-model="value" placeholder="请选择" class="inputtext">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
+      工单编号：<Input
+        placeholder="请输入内容"
+        class="inputtext"
+        type="serch"
+      ></Input>
+      工单状态：<Select></Select>
+
+      <Button type="serch"><i class="el-icon-search"></i> 搜索</Button>
     </div>
     <div class="main">
-      <el-button type="primary" icon="el-icon-circle-plus">新建</el-button>
+      <Button type="new">
+        <i class="el-icon-circle-plus-outline"></i> 新建</Button
+      >
+      <Table :list="list"></Table>
     </div>
   </div>
 </template>
 
 <script>
+import Button from "@/components/BUtton/index.vue";
+import Input from "@/components/imput/index.vue";
+import Select from "@/components/select";
+import Table from "@/components/table";
+import { gettastlist } from "@/api/table";
 export default {
   data() {
     return {
-      options: [
-        {
-          value: "选项1",
-          label: "代办",
-        },
-        {
-          value: "选项2",
-          label: "进行",
-        },
-        {
-          value: "选项3",
-          label: "取消",
-        },
-        {
-          value: "选项4",
-          label: "完成",
-        },
-      ],
-      value: "",
+      list: [],
     };
   },
+  components: {
+    Input,
+    Button,
+    Select,
+    Table,
+  },
+  created() {
+    this.gettastlist();
+  },
 
-  created() {},
-
-  methods: {},
+  methods: {
+    async gettastlist() {
+      const res = await gettastlist();
+      this.list = res.data.currentPageRecords;
+    },
+  },
 };
 </script>
 
@@ -66,5 +64,7 @@ export default {
 }
 .main {
   background-color: #fff;
+  padding-left: 25px;
+  margin-top: 25px;
 }
 </style>
